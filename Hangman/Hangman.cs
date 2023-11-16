@@ -384,6 +384,7 @@
         };
 
         const char Underscore = '_';
+        const int MaxAllowedIncorrectCharecters = 6;
 
         static void Main(string[] args)
         {
@@ -397,7 +398,7 @@
                 int incorrectGuessCount = 0;
                 List<char> playerUsedLetters = new List<char>();
                 DrawCurrentGameState(false, incorrectGuessCount, wordToGuess, playerUsedLetters);
-                Console.ReadLine();
+                PlayGame(word, wordToGuess, incorrectGuessCount, playerUsedLetters);
             }
         }
 
@@ -418,7 +419,7 @@
 
             if (inputIsInvalid )
             {
-                Console.WriteLine("You should type only a single charecter!")
+                Console.WriteLine("You should type only a single charecter!");
             }
             Console.WriteLine("Your symbol: ");
         }
@@ -464,7 +465,7 @@
                     Console.Clear();
                     Console.WriteLine(Loss);
                     Console.WriteLine($"The exact word is [{word}].");
-
+                    Thread.Sleep(1000);
                     break;
                 }
             }
@@ -472,27 +473,53 @@
 
         static bool CheckIfSymbolIsContained(string word, char playerLetter)
         {
-
+            if (!word.Contains(playerLetter))
+            {
+                return false;
+            }
+            return true;
         }
 
         static string AddLetterToGuessWord(string word, char playerLetter, string wordToGuess)
         {
+            char[] wordToGuessCharArr = wordToGuess.ToCharArray();
 
+            for (int i = 0; i < wordToGuess.Length; i++)
+            {
+                if (playerLetter == word[i])
+                {
+                    wordToGuessCharArr[i]= playerLetter;
+                }
+            }
+            return new string(wordToGuessCharArr);
         }
 
-        static bool CheckIfPlayerWins(string wordToGuessChar)
+        static bool CheckIfPlayerWins(string wordToGuess)
         {
-
+            if (wordToGuess.Contains(Underscore))
+            {
+                return false;
+            }
+            return true;
         }
 
         static bool CheckIfPlayerLoses(int incorrectGuessCount)
         {
-
+            if (incorrectGuessCount == MaxAllowedIncorrectCharecters)
+            {
+                return true;
+            }
+            return false;
         }
 
         static void DrawDeathAnimation(string[] deathAnimation)
         {
-
+            for (int i = 0; i<deathAnimation.Length; i++)
+            {
+                Console.WriteLine(deathAnimation[i]);
+                Thread.Sleep(200);
+                Console.SetCursorPosition(0, 0);
+            }
         }
 
         static string[] ReadWordsFromFile()
