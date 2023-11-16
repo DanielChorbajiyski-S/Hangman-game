@@ -435,6 +435,38 @@
                 }
                 char playerLetter = char.Parse(playerInput);
                 playerUsedLetters.Add(playerLetter);
+
+                bool playerLetterIsContained = CheckIfSymbolIsContained(word, playerLetter);
+                if (playerLetterIsContained)
+                {
+                    wordToGuess = AddLetterToGuessWord(word, playerLetter, wordToGuess);
+                }
+                else
+                {
+                    incorrectGuessCount++;
+                }
+
+                DrawCurrentGameState(false, incorrectGuessCount, wordToGuess, playerUsedLetters);
+                bool playerWins = CheckIfPlayerWins(wordToGuess);
+                if (playerWins)
+                {
+                    Console.Clear();
+                    Console.WriteLine(Win);
+                    Console.WriteLine($"The word you guessed is [{word}].");
+                    break;
+                }
+
+                bool playerLoses = CheckIfPlayerLoses(incorrectGuessCount);
+                if (playerLoses)
+                {
+                    Console.SetCursorPosition(0, 0);
+                    DrawDeathAnimation(deathAnimationFrames);
+                    Console.Clear();
+                    Console.WriteLine(Loss);
+                    Console.WriteLine($"The exact word is [{word}].");
+
+                    break;
+                }
             }
         }
 
