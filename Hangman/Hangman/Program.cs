@@ -454,6 +454,7 @@
                     Console.Clear();
                     Console.WriteLine(Win);
                     Console.WriteLine($"The word you guessed is [{word}].");
+                    Thread.Sleep(2000);
                     break;
                 }
 
@@ -465,7 +466,7 @@
                     Console.Clear();
                     Console.WriteLine(Loss);
                     Console.WriteLine($"The exact word is [{word}].");
-                    Thread.Sleep(1500);
+                    Thread.Sleep(2000);
                     break;
                 }
             }
